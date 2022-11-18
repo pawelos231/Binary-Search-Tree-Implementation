@@ -29,10 +29,44 @@ public:
 		}
 		return root;
 	}
-	void InorderTraversal(BST* root) {
+	BST* deleteNode(BST* root, int nodeToDelete) {
 		if (!root) {
+			return NULL;
+		}
+		if (nodeToDelete < root->data) {
+			root->left = deleteNode(root->left, nodeToDelete);
+		}
+		else if (nodeToDelete > root->data) {
+			root->right = deleteNode(root->right, nodeToDelete);
+		}
+		else {
+			if (root->left == NULL && root->right == NULL) {
+				return NULL;
+			}
+			else if (root->left == NULL) {
+				BST* temp = root->right;
+				delete root;
+				return temp;
+			}
+			else if (root->right == NULL) {
+				BST* temp = root->left;
+				delete root;
+				return temp;
+			}
+
+			//implement case where node has both childs
+		}
+		return root;
+
+	}
+
+	
+
+	void InorderTraversal(BST* root) {
+		if (root == NULL) {
 			return;
 		}
+
 		InorderTraversal(root->left);
 		LOG(root->data);
 		InorderTraversal(root->right);
@@ -46,6 +80,7 @@ int main() {
 	b.insertNode(root, 40);
 	b.insertNode(root, 70);
 	b.insertNode(root, 60);
-	b.insertNode(root, 80);
+
+	b.deleteNode(root, 60);
 	b.InorderTraversal(root);
 }
