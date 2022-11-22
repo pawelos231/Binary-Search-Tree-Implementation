@@ -29,6 +29,14 @@ public:
 		}
 		return root;
 	}
+	BST* findMinValueOnRight(BST* curr) {
+		//iterating to the utmost left leaf
+		BST* temp = curr;
+		while (curr != NULL && curr->left != NULL) {
+			curr = curr->left;
+		}
+		return curr;
+	}
 	BST* deleteNode(BST* root, int nodeToDelete) {
 		if (!root) {
 			return NULL;
@@ -53,11 +61,13 @@ public:
 				delete root;
 				return temp;
 			}
-
-			//implement case where node has both childs
+			//if node has 2 children find the utmost left node of right node of root node
+			BST* node = findMinValueOnRight(root->right);
+			//assign its value
+			root->data = node->data;
+			root->right = deleteNode(root->right, node->data);
 		}
 		return root;
-
 	}
 
 	
@@ -66,9 +76,7 @@ public:
 		if (root == NULL) {
 			return;
 		}
-
 		InorderTraversal(root->left);
-		LOG(root->data);
 		InorderTraversal(root->right);
 	}
 };
@@ -80,7 +88,7 @@ int main() {
 	b.insertNode(root, 40);
 	b.insertNode(root, 70);
 	b.insertNode(root, 60);
+	b.insertNode(root, 80);
 
-	b.deleteNode(root, 60);
-	b.InorderTraversal(root);
+	b.deleteNode(root, 50);
 }
